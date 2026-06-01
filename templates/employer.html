@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer — WorkNest</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f7ff;
+      --card: #fff;
+      --surface: #f2efff;
+      --border: #e8e2ff;
+      --accent: #6c47ff;
+      --accent2: #ff6b6b;
+      --green: #00c48c;
+      --yellow: #ffb020;
+      --text: #1a1030;
+      --muted: #7c6fa0;
+      --pill: #ede9ff
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 60px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      font-style: italic
+    }
+
+    .nav-r a {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 500;
+      margin-left: 6px;
+      transition: all .2s
+    }
+
+    .nav-r a:hover {
+      color: var(--text);
+      background: var(--surface)
+    }
+
+    .nav-r a.back {
+      color: var(--accent)
+    }
+
+    .main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 40px 60px
+    }
+
+    .fg {
+      margin-bottom: 14px
+    }
+
+    .fg label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px
+    }
+
+    .fg input,
+    .fg textarea,
+    .fg select {
+      width: 100%;
+      padding: 11px 15px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    .fg input:focus,
+    .fg textarea:focus,
+    .fg select:focus {
+      border-color: var(--accent)
+    }
+
+    .fg select option {
+      background: var(--card)
+    }
+
+    .fg textarea {
+      resize: vertical;
+      min-height: 85px
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 11px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-p {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .btn-p:hover {
+      background: #5538dd
+    }
+
+    .btn-g {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1.5px solid var(--border)
+    }
+
+    .btn-g:hover {
+      color: var(--text)
+    }
+
+    .msg {
+      padding: 11px 15px;
+      border-radius: 11px;
+      font-size: 14px;
+      margin-top: 10px;
+      font-weight: 500
+    }
+
+    .msg.ok {
+      background: #00c48c12;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .msg.err {
+      background: #ff6b6b12;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    /* auth */
+    .auth-wrap {
+      display: flex;
+      gap: 20px;
+      max-width: 860px
+    }
+
+    .auth-card {
+      flex: 1;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 28px
+    }
+
+    .auth-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    .auth-card .sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 20px
+    }
+
+    /* dashboard */
+    #dash {
+      display: none
+    }
+
+    .welcome {
+      margin-bottom: 32px
+    }
+
+    .welcome h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      font-weight: 700
+    }
+
+    .welcome p {
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 26px
+    }
+
+    .tab {
+      padding: 10px 22px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      border: 1.5px solid transparent;
+      transition: all .2s
+    }
+
+    .tab:hover {
+      color: var(--text)
+    }
+
+    .tab.on {
+      color: var(--accent);
+      border-color: #6c47ff33;
+      background: var(--pill)
+    }
+
+    .panel {
+      display: none
+    }
+
+    .panel.on {
+      display: block
+    }
+
+    /* post form */
+    .pform {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      max-width: 680px
+    }
+
+    .pform h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px
+    }
+
+    .row {
+      display: flex;
+      gap: 14px
+    }
+
+    .row .fg {
+      flex: 1
+    }
+
+    .skill-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px
+    }
+
+    .skill-row input {
+      flex: 1
+    }
+
+    .add-sk {
+      padding: 11px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: all .2s
+    }
+
+    .add-sk:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
+    .sk-list {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px
+    }
+
+    .sk-tag {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      background: var(--pill);
+      border: 1px solid #6c47ff33;
+      border-radius: 100px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 500
+    }
+
+    .sk-tag .rm {
+      cursor: pointer;
+      opacity: .5;
+      font-size: 13px
+    }
+
+    .sk-tag .rm:hover {
+      opacity: 1
+    }
+
+    /* listings */
+    .job-row {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    .jr-info {
+      flex: 1
+    }
+
+    .jr-title {
+      font-size: 16px;
+      font-weight: 700
+    }
+
+    .jr-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 3px
+    }
+
+    .jr-actions {
+      display: flex;
+      gap: 8px
+    }
+
+    .bs {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      transition: all .2s
+    }
+
+    .bs-close {
+      background: #ff6b6b12;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    .bs-close:hover {
+      background: #ff6b6b22
+    }
+
+    .badge {
+      padding: 4px 11px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600
+    }
+
+    .b-open {
+      background: #00c48c12;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .b-closed {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border)
+    }
+
+    /* applicants */
+    .app-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 12px
+    }
+
+    .app-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 16px
+    }
+
+    .app-name {
+      font-size: 16px;
+      font-weight: 700
+    }
+
+    .app-email {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px
+    }
+
+    .app-date {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0
+    }
+
+    .cover-box {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      font-style: italic
+    }
+
+    .app-actions {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      flex-wrap: wrap
+    }
+
+    .status-sel {
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      outline: none;
+      cursor: pointer
+    }
+
+    .feedback-inp {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      outline: none;
+      min-width: 180px
+    }
+
+    .feedback-inp:focus {
+      border-color: var(--accent)
+    }
+
+    .feedback-inp::placeholder {
+      color: var(--muted)
+    }
+
+    .upd-btn {
+      padding: 9px 18px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap
+    }
+
+    .upd-btn:hover {
+      background: #5538dd
+    }
+
+    .status-msg {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--green);
+      font-style: italic
+    }
+
+    .job-sel-wrap {
+      max-width: 400px;
+      margin-bottom: 22px
+    }
+
+    .empty {
+      text-align: center;
+      padding: 50px;
+      color: var(--muted)
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">WorkNest</div>
+    <div class="nav-r">
+      <a href="/" class="back">← Browse Jobs</a>
+      <a href="/candidate">Candidate</a>
+      <a href="/admin">Admin</a>
+      <span id="logoutWrap" style="display:none"><a href="#" onclick="logout()">Logout</a></span>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- AUTH -->
+    <div id="authPanel">
+      <div style="margin-bottom:28px">
+        <h2 style="font-family:'Fraunces',serif;font-size:28px;font-weight:700">Employer Portal</h2>
+        <p style="color:var(--muted);margin-top:4px">Post jobs and find your next great hire.</p>
+      </div>
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <h3>Sign In</h3>
+          <div class="sub">Already have an account</div>
+          <div class="fg"><label>Email</label><input type="email" id="lEmail" placeholder="hr@company.com"></div>
+          <div class="fg"><label>Password</label><input type="password" id="lPass"></div>
+          <button class="btn btn-p" style="width:100%" onclick="loginEmp()">Sign In</button>
+          <div id="lMsg"></div>
+        </div>
+        <div class="auth-card">
+          <h3>Register Company</h3>
+          <div class="sub">Start hiring — it's free</div>
+          <div class="fg"><label>Company Name</label><input type="text" id="rComp" placeholder="Acme Corp"></div>
+          <div class="fg"><label>Email</label><input type="email" id="rEmail" placeholder="hr@acme.com"></div>
+          <div class="fg"><label>Password</label><input type="password" id="rPass"></div>
+          <div class="fg"><label>Industry</label>
+            <select id="rInd">
+              <option>Technology</option>
+              <option>Finance</option>
+              <option>Healthcare</option>
+              <option>Education</option>
+              <option>E-Commerce</option>
+              <option>Media</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Website (optional)</label><input type="text" id="rWeb" placeholder="https://"></div>
+          <button class="btn btn-p" style="width:100%" onclick="registerEmp()">Create Account</button>
+          <div id="rMsg"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dash">
+      <div class="welcome">
+        <h2>Hey, <span id="empName"></span> 👋</h2>
+        <p>Manage your listings and find the right people.</p>
+      </div>
+      <div class="tabs">
+        <div class="tab on" onclick="sw('post')">Post a Job</div>
+        <div class="tab" onclick="sw('listings')">My Listings</div>
+        <div class="tab" onclick="sw('applicants')">Applicants</div>
+      </div>
+
+      <!-- POST JOB -->
+      <div class="panel on" id="p-post">
+        <div class="pform">
+          <h3>Post a New Job</h3>
+          <div class="row">
+            <div class="fg"><label>Job Title *</label><input type="text" id="jTitle"
+                placeholder="e.g. Backend Developer"></div>
+            <div class="fg"><label>Location *</label><input type="text" id="jLoc" placeholder="Mumbai / Remote"></div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>Job Type *</label>
+              <select id="jType">
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Remote</option>
+                <option>Contract</option>
+                <option>Internship</option>
+              </select>
+            </div>
+            <div class="fg"><label>Salary / Package *</label><input type="text" id="jSal" placeholder="₹8–12 LPA"></div>
+          </div>
+          <div class="fg"><label>Experience Required</label>
+            <select id="jExp">
+              <option>Any</option>
+              <option>0–1 years</option>
+              <option>1–3 years</option>
+              <option>3–5 years</option>
+              <option>5+ years</option>
+            </select>
+          </div>
+          <div class="fg"><label>Job Description *</label>
+            <textarea id="jDesc"
+              placeholder="Describe the role, what they'll build, who they'll work with..."></textarea>
+          </div>
+          <div class="fg"><label>Required Skills</label>
+            <div class="skill-row">
+              <input type="text" id="skInput" placeholder="e.g. Python" onkeydown="if(event.key==='Enter')addSk()">
+              <button class="add-sk" onclick="addSk()">+ Add Skill</button>
+            </div>
+            <div class="sk-list" id="skList"></div>
+          </div>
+          <button class="btn btn-p" onclick="postJob()">Publish Job 🚀</button>
+          <div id="postMsg"></div>
+        </div>
+      </div>
+
+      <!-- LISTINGS -->
+      <div class="panel" id="p-listings">
+        <div id="listingsWrap">
+          <div class="empty">Loading...</div>
+        </div>
+      </div>
+
+      <!-- APPLICANTS -->
+      <div class="panel" id="p-applicants">
+        <div class="job-sel-wrap">
+          <div class="fg"><label>Select a job to view applicants</label>
+            <select id="jobSel" onchange="loadApplicants()">
+              <option value="">— Pick a job —</option>
+            </select>
+          </div>
+        </div>
+        <div id="applicantsWrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let empId = null, empName = '';
+    let skills = [];
+
+    function sw(tab) {
+      ['post', 'listings', 'applicants'].forEach((t, i) => {
+        document.querySelectorAll('.tab')[i].classList.toggle('on', t === tab);
+        document.getElementById('p-' + t).classList.toggle('on', t === tab);
+      });
+      if (tab === 'listings') loadListings();
+      if (tab === 'applicants') fillJobSel();
+    }
+
+    async function loginEmp() {
+      const res = await fetch('/api/employers/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: document.getElementById('lEmail').value, password: document.getElementById('lPass').value })
+      });
+      const d = await res.json();
+      if (d.error) { document.getElementById('lMsg').innerHTML = `<div class="msg err">${d.error}</div>`; return; }
+      empId = d.employer_id; empName = d.company_name;
+      showDash();
+    }
+
+    async function registerEmp() {
+      const res = await fetch('/api/employers/register', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company_name: document.getElementById('rComp').value,
+          email: document.getElementById('rEmail').value,
+          password: document.getElementById('rPass').value,
+          industry: document.getElementById('rInd').value,
+          website: document.getElementById('rWeb').value
+        })
+      });
+      const d = await res.json();
+      const msg = document.getElementById('rMsg');
+      if (d.error) { msg.innerHTML = `<div class="msg err">${d.error}</div>`; return; }
+      msg.innerHTML = `<div class="msg ok">${d.message} Please sign in.</div>`;
+    }
+
+    function showDash() {
+      document.getElementById('authPanel').style.display = 'none';
+      document.getElementById('dash').style.display = 'block';
+      document.getElementById('logoutWrap').style.display = 'inline';
+      document.getElementById('empName').textContent = empName;
+    }
+    function logout() { location.reload(); }
+
+    function addSk() {
+      const v = document.getElementById('skInput').value.trim();
+      if (!v || skills.includes(v)) return;
+      skills.push(v);
+      document.getElementById('skInput').value = '';
+      renderSk();
+    }
+    function rmSk(s) { skills = skills.filter(x => x !== s); renderSk(); }
+    function renderSk() {
+      document.getElementById('skList').innerHTML = skills.map(s =>
+        `<span class="sk-tag">${s} <span class="rm" onclick="rmSk('${s}')">✕</span></span>`
+      ).join('');
+    }
+
+    async function postJob() {
+      const body = {
+        title: document.getElementById('jTitle').value.trim(),
+        employer_id: empId, company_name: empName,
+        description: document.getElementById('jDesc').value.trim(),
+        location: document.getElementById('jLoc').value.trim(),
+        job_type: document.getElementById('jType').value,
+        salary: document.getElementById('jSal').value.trim(),
+        experience: document.getElementById('jExp').value,
+        skills
+      };
+      const msg = document.getElementById('postMsg');
+      if (!body.title || !body.description || !body.location || !body.salary) {
+        msg.innerHTML = '<div class="msg err">Please fill all required fields.</div>'; return;
+      }
+      const res = await fetch('/api/jobs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const d = await res.json();
+      if (d.error) { msg.innerHTML = `<div class="msg err">${d.error}</div>`; return; }
+      msg.innerHTML = `<div class="msg ok">${d.message}</div>`;
+      skills = []; renderSk();
+      ['jTitle', 'jLoc', 'jSal', 'jDesc'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    async function loadListings() {
+      const all = await fetch('/api/jobs').then(r => r.json());
+      const mine = all.filter(j => j.employer_id === empId);
+      const wrap = document.getElementById('listingsWrap');
+      if (!mine.length) { wrap.innerHTML = '<div class="empty">No jobs posted yet. Post your first one! 🚀</div>'; return; }
+      wrap.innerHTML = mine.map(j => `
+    <div class="job-row">
+      <div class="jr-info">
+        <div class="jr-title">${j.title}</div>
+        <div class="jr-meta">${j.location} · ${j.job_type} · ${j.salary}</div>
+      </div>
+      <span class="badge ${j.status === 'open' ? 'b-open' : 'b-closed'}">${j.status}</span>
+      <div class="jr-actions">
+        ${j.status === 'open' ? `<button class="bs bs-close" onclick="closeJob('${j._id}')">Close Job</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+    }
+
+    async function closeJob(id) {
+      await fetch('/api/jobs/' + id, { method: 'DELETE' });
+      loadListings();
+    }
+
+    async function fillJobSel() {
+      const all = await fetch('/api/jobs').then(r => r.json());
+      const mine = all.filter(j => j.employer_id === empId);
+      document.getElementById('jobSel').innerHTML =
+        '<option value="">— Pick a job —</option>' +
+        mine.map(j => `<option value="${j._id}">${j.title}</option>`).join('');
+    }
+
+    const STATUS_LABELS = {
+      applied: 'Applied', reviewed: 'Reviewed', interview: 'Interview Scheduled', hired: 'Hired 🎉', rejected: 'Rejected'
+    };
+
+    async function loadApplicants() {
+      const jobId = document.getElementById('jobSel').value;
+      if (!jobId) return;
+      const apps = await fetch('/api/applications/job/' + jobId).then(r => r.json());
+      const wrap = document.getElementById('applicantsWrap');
+      if (!apps.length) { wrap.innerHTML = '<div class="empty">No applications yet for this job.</div>'; return; }
+      wrap.innerHTML = apps.map(a => `
+    <div class="app-card">
+      <div class="app-top">
+        <div>
+          <div class="app-name">${a.candidate_name}</div>
+          <div class="app-email">${a.candidate_email}</div>
+        </div>
+        <div class="app-date">Applied ${fmtDate(a.applied_at)}</div>
+      </div>
+      <div class="cover-box">"${a.cover_letter}"</div>
+      ${a.employer_feedback ? `<div style="font-size:13px;color:var(--muted);margin-bottom:12px">📝 Your feedback: <em>${a.employer_feedback}</em></div>` : ''}
+      <div class="app-actions">
+        <select class="status-sel" id="sel-${a._id}">
+          ${Object.keys(STATUS_LABELS).map(s => `<option value="${s}" ${a.status === s ? 'selected' : ''}>${STATUS_LABELS[s]}</option>`).join('')}
+        </select>
+        <input class="feedback-inp" id="fb-${a._id}" placeholder="Leave a personal note for your own records..." value="${a.employer_feedback || ''}">
+        <button class="upd-btn" onclick="updateApp('${a._id}')">Update</button>
+      </div>
+      <div class="status-msg" id="sm-${a._id}"></div>
+    </div>
+  `).join('');
+    }
+
+    async function updateApp(id) {
+      const status = document.getElementById('sel-' + id).value;
+      const feedback = document.getElementById('fb-' + id).value;
+      const res = await fetch('/api/applications/' + id + '/status', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, feedback })
+      });
+      const d = await res.json();
+      document.getElementById('sm-' + id).textContent = d.message;
+    }
+
+    function fmtDate(iso) {
+      return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+  </script>
+</body>
+
+</html>

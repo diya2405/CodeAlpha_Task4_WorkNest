@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate — WorkNest</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f7ff;
+      --card: #fff;
+      --surface: #f2efff;
+      --border: #e8e2ff;
+      --accent: #6c47ff;
+      --accent2: #ff6b6b;
+      --green: #00c48c;
+      --yellow: #ffb020;
+      --blue: #3b82f6;
+      --text: #1a1030;
+      --muted: #7c6fa0;
+      --pill: #ede9ff
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 60px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      font-style: italic
+    }
+
+    .nav-r a {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 500;
+      margin-left: 6px;
+      transition: all .2s
+    }
+
+    .nav-r a:hover {
+      color: var(--text);
+      background: var(--surface)
+    }
+
+    .nav-r a.back {
+      color: var(--accent)
+    }
+
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 60px
+    }
+
+    .fg {
+      margin-bottom: 14px
+    }
+
+    .fg label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px
+    }
+
+    .fg input,
+    .fg textarea {
+      width: 100%;
+      padding: 11px 15px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    .fg input:focus,
+    .fg textarea:focus {
+      border-color: var(--accent)
+    }
+
+    .fg textarea {
+      resize: vertical;
+      min-height: 90px
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 11px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-p {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .btn-p:hover {
+      background: #5538dd
+    }
+
+    .msg {
+      padding: 11px 15px;
+      border-radius: 11px;
+      font-size: 14px;
+      margin-top: 10px;
+      font-weight: 500
+    }
+
+    .msg.ok {
+      background: #00c48c12;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .msg.err {
+      background: #ff6b6b12;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    .auth-row {
+      display: flex;
+      gap: 18px;
+      max-width: 760px
+    }
+
+    .auth-card {
+      flex: 1;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 26px
+    }
+
+    .auth-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    .auth-card .sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 18px
+    }
+
+    #dash {
+      display: none
+    }
+
+    .page-head {
+      margin-bottom: 30px
+    }
+
+    .page-head h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 700
+    }
+
+    .page-head p {
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 26px
+    }
+
+    .tab {
+      padding: 10px 22px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      border: 1.5px solid transparent;
+      transition: all .2s
+    }
+
+    .tab:hover {
+      color: var(--text)
+    }
+
+    .tab.on {
+      color: var(--accent);
+      border-color: #6c47ff33;
+      background: var(--pill)
+    }
+
+    .panel {
+      display: none
+    }
+
+    .panel.on {
+      display: block
+    }
+
+    /* app cards */
+    .app-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: all .2s
+    }
+
+    .app-card:hover {
+      box-shadow: 0 4px 20px #6c47ff0a
+    }
+
+    .app-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0
+    }
+
+    .app-info {
+      flex: 1
+    }
+
+    .app-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 3px
+    }
+
+    .app-company {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px
+    }
+
+    .cover-preview {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 10px
+    }
+
+    .status-msg-box {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 10px
+    }
+
+    .s-applied {
+      background: var(--pill);
+      color: var(--accent);
+      border: 1px solid #6c47ff22
+    }
+
+    .s-reviewed {
+      background: #ffb02012;
+      color: var(--yellow);
+      border: 1px solid #ffb02033
+    }
+
+    .s-interview {
+      background: #3b82f612;
+      color: var(--blue);
+      border: 1px solid #3b82f633
+    }
+
+    .s-hired {
+      background: #00c48c12;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .s-rejected {
+      background: #ff6b6b12;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    .fb-box {
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 10px
+    }
+
+    .app-right {
+      text-align: right;
+      flex-shrink: 0
+    }
+
+    .app-date {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px
+    }
+
+    .wd-btn {
+      padding: 7px 14px;
+      background: transparent;
+      border: 1.5px solid #ff6b6b55;
+      color: var(--accent2);
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: all .2s
+    }
+
+    .wd-btn:hover {
+      background: #ff6b6b12
+    }
+
+    /* profile */
+    .pform {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      max-width: 600px
+    }
+
+    .pform h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 18px
+    }
+
+    .row {
+      display: flex;
+      gap: 14px
+    }
+
+    .row .fg {
+      flex: 1
+    }
+
+    .empty {
+      text-align: center;
+      padding: 50px;
+      color: var(--muted)
+    }
+
+    .empty .ico {
+      font-size: 38px;
+      margin-bottom: 10px
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">WorkNest</div>
+    <div class="nav-r">
+      <a href="/" class="back">← Browse Jobs</a>
+      <a href="/employer">For Employers</a>
+      <a href="/admin">Admin</a>
+      <span id="logoutWrap" style="display:none"><a href="#" onclick="logout()">Logout</a></span>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- AUTH -->
+    <div id="authPanel">
+      <div style="margin-bottom:24px">
+        <h2 style="font-family:'Fraunces',serif;font-size:28px;font-weight:700">Candidate Portal</h2>
+        <p style="color:var(--muted);margin-top:4px">Track applications and manage your profile.</p>
+      </div>
+      <div class="auth-row">
+        <div class="auth-card">
+          <h3>Sign In</h3>
+          <div class="sub">See your applications</div>
+          <div class="fg"><label>Email</label><input type="email" id="lEmail" placeholder="you@email.com"></div>
+          <div class="fg"><label>Password</label><input type="password" id="lPass"></div>
+          <button class="btn btn-p" style="width:100%" onclick="loginCand()">Sign In</button>
+          <div id="lMsg"></div>
+        </div>
+        <div class="auth-card">
+          <h3>Create Account</h3>
+          <div class="sub">Start your job hunt today</div>
+          <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your name"></div>
+          <div class="fg"><label>Email</label><input type="email" id="rEmail"></div>
+          <div class="fg"><label>Password</label><input type="password" id="rPass"></div>
+          <button class="btn btn-p" style="width:100%" onclick="registerCand()">Create Account</button>
+          <div id="rMsg"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dash">
+      <div class="page-head">
+        <h2>Hey, <span id="candName"></span> 👋</h2>
+        <p>Here's where your job hunt stands.</p>
+      </div>
+      <div class="tabs">
+        <div class="tab on" onclick="sw('apps')">My Applications</div>
+        <div class="tab" onclick="sw('profile')">My Profile</div>
+      </div>
+
+      <div class="panel on" id="p-apps">
+        <div id="appsWrap">
+          <div class="empty">Loading...</div>
+        </div>
+      </div>
+
+      <div class="panel" id="p-profile">
+        <div class="pform">
+          <h3>Update Your Profile</h3>
+          <div class="row">
+            <div class="fg"><label>Full Name</label><input type="text" id="pName"></div>
+            <div class="fg"><label>Location</label><input type="text" id="pLoc" placeholder="City, Country"></div>
+          </div>
+          <div class="fg"><label>Experience</label><input type="text" id="pExp"
+              placeholder="e.g. 2 years in backend dev"></div>
+          <div class="fg"><label>Skills (comma separated)</label><input type="text" id="pSkills"
+              placeholder="Python, Flask, MongoDB, REST APIs"></div>
+          <div class="fg"><label>Resume / About Me</label>
+            <textarea id="pResume" placeholder="Paste your resume summary or a short bio about yourself..."></textarea>
+          </div>
+          <button class="btn btn-p" onclick="saveProfile()">Save Profile</button>
+          <div id="profMsg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let candId = null;
+
+    function sw(tab) {
+      ['apps', 'profile'].forEach((t, i) => {
+        document.querySelectorAll('.tab')[i].classList.toggle('on', t === tab);
+        document.getElementById('p-' + t).classList.toggle('on', t === tab);
+      });
+      if (tab === 'apps') loadApps();
+    }
+
+    async function loginCand() {
+      const res = await fetch('/api/candidates/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: document.getElementById('lEmail').value, password: document.getElementById('lPass').value })
+      });
+      const d = await res.json();
+      if (d.error) { document.getElementById('lMsg').innerHTML = `<div class="msg err">${d.error}</div>`; return; }
+      candId = d.candidate_id;
+      showDash(d.name);
+    }
+
+    async function registerCand() {
+      const res = await fetch('/api/candidates/register', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('rName').value,
+          email: document.getElementById('rEmail').value,
+          password: document.getElementById('rPass').value
+        })
+      });
+      const d = await res.json();
+      if (d.error) { document.getElementById('rMsg').innerHTML = `<div class="msg err">${d.error}</div>`; return; }
+      document.getElementById('rMsg').innerHTML = `<div class="msg ok">${d.message}</div>`;
+    }
+
+    function showDash(name) {
+      document.getElementById('authPanel').style.display = 'none';
+      document.getElementById('dash').style.display = 'block';
+      document.getElementById('logoutWrap').style.display = 'inline';
+      document.getElementById('candName').textContent = name;
+      loadApps();
+    }
+    function logout() { location.reload(); }
+
+    const STATUS_CLASS = { applied: 's-applied', reviewed: 's-reviewed', interview: 's-interview', hired: 's-hired', rejected: 's-rejected' };
+
+    function logoColor(name) {
+      const c = ['#6c47ff', '#ff6b6b', '#00c48c', '#ffb020', '#3b82f6', '#ec4899'];
+      return c[name.charCodeAt(0) % c.length];
+    }
+
+    async function loadApps() {
+      const apps = await fetch('/api/applications/candidate/' + candId).then(r => r.json());
+      const wrap = document.getElementById('appsWrap');
+      if (!apps.length) {
+        wrap.innerHTML = '<div class="empty"><div class="ico">📋</div>No applications yet.<br><a href="/" style="color:var(--accent);font-weight:600">Browse open jobs →</a></div>';
+        return;
+      }
+      wrap.innerHTML = apps.map(a => `
+    <div class="app-card">
+      <div class="app-logo" style="background:${logoColor(a.company_name)}">${a.company_name[0]}</div>
+      <div class="app-info">
+        <div class="app-title">${a.job_title}</div>
+        <div class="app-company">${a.company_name}</div>
+        <div class="cover-preview">"${a.cover_letter}"</div>
+        <div class="status-msg-box ${STATUS_CLASS[a.status]}">${a.status_message}</div>
+        ${a.employer_feedback ? `<div class="fb-box">💬 From ${a.company_name}: <em>"${a.employer_feedback}"</em></div>` : ''}
+      </div>
+      <div class="app-right">
+        <div class="app-date">Applied ${fmtDate(a.applied_at)}</div>
+        ${a.status !== 'hired' ? `<button class="wd-btn" onclick="withdraw('${a._id}')">Withdraw</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+    }
+
+    async function withdraw(id) {
+      if (!confirm('Withdraw this application?')) return;
+      await fetch('/api/applications/' + id, { method: 'DELETE' });
+      loadApps();
+    }
+
+    async function saveProfile() {
+      const skills = document.getElementById('pSkills').value.split(',').map(s => s.trim()).filter(Boolean);
+      const res = await fetch('/api/candidates/' + candId, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('pName').value,
+          location: document.getElementById('pLoc').value,
+          experience: document.getElementById('pExp').value,
+          skills,
+          resume_text: document.getElementById('pResume').value
+        })
+      });
+      const d = await res.json();
+      document.getElementById('profMsg').innerHTML = `<div class="msg ok">${d.message}</div>`;
+    }
+
+    function fmtDate(iso) {
+      return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+  </script>
+</body>
+
+</html>

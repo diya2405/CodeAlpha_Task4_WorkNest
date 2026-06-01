@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkNest — Find Work That Fits</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f7ff;
+      --card: #ffffff;
+      --surface: #f2efff;
+      --border: #e8e2ff;
+      --accent: #6c47ff;
+      --accent2: #ff6b6b;
+      --green: #00c48c;
+      --yellow: #ffb020;
+      --text: #1a1030;
+      --muted: #7c6fa0;
+      --pill: #ede9ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 60px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px #6c47ff0a
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      font-style: italic
+    }
+
+    .nav-r {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .nav-r a {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 500;
+      transition: all .2s
+    }
+
+    .nav-r a:hover {
+      color: var(--text);
+      background: var(--surface)
+    }
+
+    .nav-r a.cta {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600
+    }
+
+    .nav-r a.cta:hover {
+      background: #5538dd
+    }
+
+    /* HERO */
+    .hero {
+      padding: 80px 60px 60px;
+      max-width: 1100px;
+      margin: 0 auto
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--pill);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 28px;
+      font-weight: 500
+    }
+
+    .hero-tag .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 66px;
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -2px;
+      margin-bottom: 20px
+    }
+
+    h1 em {
+      color: var(--accent);
+      font-style: italic
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 40px
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      max-width: 740px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 24px #6c47ff0d
+    }
+
+    .search-wrap input,
+    .search-wrap select {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      padding: 10px 14px;
+      outline: none
+    }
+
+    .search-wrap select option {
+      background: var(--card)
+    }
+
+    .sep {
+      width: 1px;
+      background: var(--border);
+      margin: 6px 0
+    }
+
+    .s-btn {
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap
+    }
+
+    .s-btn:hover {
+      background: #5538dd
+    }
+
+    .quick {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .qf {
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .qf:hover,
+    .qf.on {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--pill)
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      gap: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border)
+    }
+
+    .stat {
+      flex: 1;
+      padding: 22px 0;
+      text-align: center;
+      border-right: 1px solid var(--border)
+    }
+
+    .stat:last-child {
+      border-right: none
+    }
+
+    .stat .n {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent)
+    }
+
+    .stat .l {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .5px
+    }
+
+    /* JOBS */
+    .jobs-wrap {
+      max-width: 1100px;
+      margin: 50px auto;
+      padding: 0 60px
+    }
+
+    .sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px
+    }
+
+    .sec-head h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 700
+    }
+
+    .sec-head span {
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .job-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .job-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      cursor: default;
+      transition: all .2s
+    }
+
+    .job-card:hover {
+      border-color: #6c47ff55;
+      box-shadow: 0 8px 32px #6c47ff10;
+      transform: translateY(-1px)
+    }
+
+    .jc-logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0
+    }
+
+    .jc-info {
+      flex: 1
+    }
+
+    .jc-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    .jc-company {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px
+    }
+
+    .jc-tags {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap
+    }
+
+    .tag {
+      padding: 4px 11px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--pill);
+      color: var(--accent);
+      border: 1px solid var(--border)
+    }
+
+    .tag.remote {
+      background: #00c48c12;
+      color: var(--green);
+      border-color: #00c48c33
+    }
+
+    .tag.type {
+      background: var(--pill);
+      color: var(--accent);
+      border-color: #6c47ff33
+    }
+
+    .jc-right {
+      text-align: right;
+      flex-shrink: 0
+    }
+
+    .jc-salary {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px
+    }
+
+    .jc-date {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px
+    }
+
+    .apply-btn {
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s
+    }
+
+    .apply-btn:hover {
+      background: #5538dd
+    }
+
+    /* MODAL */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #1a103088;
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center
+    }
+
+    .overlay.open {
+      display: flex
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 88vh;
+      overflow-y: auto
+    }
+
+    .modal h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    .modal .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px
+    }
+
+    .fg {
+      margin-bottom: 16px
+    }
+
+    .fg label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px
+    }
+
+    .fg input,
+    .fg textarea,
+    .fg select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    .fg input:focus,
+    .fg textarea:focus {
+      border-color: var(--accent)
+    }
+
+    .fg select option {
+      background: var(--card)
+    }
+
+    .fg textarea {
+      resize: vertical;
+      min-height: 90px
+    }
+
+    .modal-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px
+    }
+
+    .btn-p {
+      flex: 1;
+      padding: 13px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s
+    }
+
+    .btn-p:hover {
+      background: #5538dd
+    }
+
+    .btn-g {
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-g:hover {
+      color: var(--text)
+    }
+
+    .msg {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-top: 12px;
+      font-weight: 500
+    }
+
+    .msg.ok {
+      background: #00c48c12;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .msg.err {
+      background: #ff6b6b12;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted)
+    }
+
+    .empty .ico {
+      font-size: 42px;
+      margin-bottom: 12px
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: var(--muted);
+      font-style: italic
+    }
+
+    /* signup/login toggle */
+    .toggle-row {
+      display: flex;
+      gap: 0;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 20px
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 9px;
+      border: none;
+      border-radius: 9px;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all .2s
+    }
+
+    .toggle-btn.on {
+      background: var(--card);
+      color: var(--accent);
+      box-shadow: 0 2px 8px #0000000d
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">WorkNest</div>
+    <div class="nav-r">
+      <a href="/candidate">My Applications</a>
+      <a href="/employer">For Employers</a>
+      <a href="/admin">Admin</a>
+      <a href="#" class="cta" onclick="openModal();return false">Sign Up Free</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag"><span class="dot"></span> Live jobs from companies hiring now</div>
+    <h1>Find work that<br>actually <em>fits.</em></h1>
+    <p>Real jobs. Real companies. No noise — just the right opportunity waiting for you.</p>
+    <div class="search-wrap">
+      <input type="text" id="kw" placeholder="Job title, skill or company...">
+      <div class="sep"></div>
+      <input type="text" id="loc" placeholder="City or Remote">
+      <div class="sep"></div>
+      <select id="jtype">
+        <option value="">All Types</option>
+        <option>Full-time</option>
+        <option>Part-time</option>
+        <option>Remote</option>
+        <option>Contract</option>
+        <option>Internship</option>
+      </select>
+      <button class="s-btn" onclick="loadJobs()">Search</button>
+    </div>
+    <div class="quick">
+      <span class="qf" onclick="qf('Remote',this)">🌍 Remote</span>
+      <span class="qf" onclick="qf('Full-time',this)">💼 Full-time</span>
+      <span class="qf" onclick="qf('Internship',this)">🎓 Internship</span>
+      <span class="qf" onclick="qf('Contract',this)">📋 Contract</span>
+      <span class="qf" onclick="qf('',this)">✨ All Jobs</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="n" id="s-jobs">—</div>
+      <div class="l">Open Jobs</div>
+    </div>
+    <div class="stat">
+      <div class="n" id="s-emp">—</div>
+      <div class="l">Companies</div>
+    </div>
+    <div class="stat">
+      <div class="n" id="s-cands">—</div>
+      <div class="l">Candidates</div>
+    </div>
+    <div class="stat">
+      <div class="n" id="s-hired">—</div>
+      <div class="l">Hired via WorkNest</div>
+    </div>
+  </div>
+
+  <!-- JOB LISTINGS -->
+  <div class="jobs-wrap">
+    <div class="sec-head">
+      <h2>Latest Openings</h2>
+      <span id="jcount"></span>
+    </div>
+    <div class="job-list" id="jobList">
+      <div class="loading">Loading jobs...</div>
+    </div>
+  </div>
+
+  <!-- APPLY MODAL -->
+  <div class="overlay" id="applyOverlay">
+    <div class="modal">
+      <h3 id="modalTitle">Apply for this Job</h3>
+      <div class="sub" id="modalSub">Login or create your account to apply</div>
+      <div class="toggle-row" id="toggleRow">
+        <button class="toggle-btn on" onclick="setMode('login')">Sign In</button>
+        <button class="toggle-btn" onclick="setMode('signup')">Create Account</button>
+      </div>
+      <div id="signupFields" style="display:none">
+        <div class="fg"><label>Full Name</label><input type="text" id="aName" placeholder="Your full name"></div>
+      </div>
+      <div class="fg"><label>Email</label><input type="email" id="aEmail" placeholder="you@email.com"></div>
+      <div class="fg"><label>Password</label><input type="password" id="aPass" placeholder="••••••••"></div>
+      <div class="fg" id="coverWrap">
+        <label>Cover Letter</label>
+        <textarea id="aCover" placeholder="Tell them why you're the perfect fit — be yourself!"></textarea>
+      </div>
+      <div id="applyMsg"></div>
+      <div class="modal-btns">
+        <button class="btn-g" onclick="closeOverlay('applyOverlay')">Cancel</button>
+        <button class="btn-p" id="applySubmit" onclick="submitApply()">Submit Application</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentJobId = null;
+    let applyMode = 'login'; // login | signup
+
+    function qf(type, el) {
+      document.querySelectorAll('.qf').forEach(e => e.classList.remove('on'));
+      el.classList.add('on');
+      document.getElementById('jtype').value = type;
+      loadJobs();
+    }
+
+    async function loadStats() {
+      const d = await fetch('/api/stats').then(r => r.json());
+      document.getElementById('s-jobs').textContent = d.total_jobs;
+      document.getElementById('s-emp').textContent = d.total_employers;
+      document.getElementById('s-cands').textContent = d.total_candidates;
+      document.getElementById('s-hired').textContent = d.hired;
+    }
+
+    async function loadJobs() {
+      const kw = document.getElementById('kw').value;
+      const loc = document.getElementById('loc').value;
+      const type = document.getElementById('jtype').value;
+      const jobs = await fetch(`/api/jobs?keyword=${kw}&location=${loc}&job_type=${type}`).then(r => r.json());
+      document.getElementById('jcount').textContent = `${jobs.length} job${jobs.length !== 1 ? 's' : ''} found`;
+      const list = document.getElementById('jobList');
+      if (!jobs.length) {
+        list.innerHTML = '<div class="empty"><div class="ico">🔍</div>No jobs found for that search.</div>';
+        return;
+      }
+      list.innerHTML = jobs.map(j => `
+    <div class="job-card">
+      <div class="jc-logo" style="background:${logoColor(j.company_name)}">${j.company_name[0].toUpperCase()}</div>
+      <div class="jc-info">
+        <div class="jc-title">${j.title}</div>
+        <div class="jc-company">${j.company_name} &middot; ${j.location}</div>
+        <div class="jc-tags">
+          <span class="tag type">${j.job_type}</span>
+          ${j.job_type === 'Remote' ? '<span class="tag remote">🌍 Remote</span>' : ''}
+          ${(j.skills || []).slice(0, 3).map(s => `<span class="tag">${s}</span>`).join('')}
+          <span class="tag">Exp: ${j.experience}</span>
+        </div>
+      </div>
+      <div class="jc-right">
+        <div class="jc-salary">${j.salary}</div>
+        <div class="jc-date">${fmtDate(j.posted_at)}</div>
+        <button class="apply-btn" onclick="openApply('${j._id}','${j.title}','${j.company_name}')">Apply Now</button>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    function logoColor(name) {
+      const colors = ['#6c47ff', '#ff6b6b', '#00c48c', '#ffb020', '#3b82f6', '#ec4899', '#8b5cf6'];
+      return colors[name.charCodeAt(0) % colors.length];
+    }
+    function fmtDate(iso) {
+      return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+
+    function openApply(jobId, title, company) {
+      currentJobId = jobId;
+      document.getElementById('modalTitle').textContent = `Apply — ${title}`;
+      document.getElementById('modalSub').textContent = `at ${company}`;
+      document.getElementById('toggleRow').style.display = 'flex';
+      document.getElementById('coverWrap').style.display = 'block';
+      document.getElementById('applyMsg').innerHTML = '';
+      setMode('login');
+      document.getElementById('applyOverlay').classList.add('open');
+    }
+
+    function openModal() {
+      currentJobId = null;
+      document.getElementById('modalTitle').textContent = 'Join WorkNest';
+      document.getElementById('modalSub').textContent = 'Create your free account';
+      document.getElementById('toggleRow').style.display = 'flex';
+      document.getElementById('coverWrap').style.display = 'none';
+      document.getElementById('applyMsg').innerHTML = '';
+      setMode('signup');
+      document.getElementById('applyOverlay').classList.add('open');
+    }
+
+    function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
+
+    function setMode(mode) {
+      applyMode = mode;
+      document.querySelectorAll('.toggle-btn').forEach((b, i) => b.classList.toggle('on', (i === 0 && mode === 'login') || (i === 1 && mode === 'signup')));
+      document.getElementById('signupFields').style.display = mode === 'signup' ? 'block' : 'none';
+      document.getElementById('applySubmit').textContent = mode === 'signup' ? 'Create Account' : 'Sign In & Apply';
+    }
+
+    async function submitApply() {
+      const email = document.getElementById('aEmail').value.trim();
+      const pass = document.getElementById('aPass').value;
+      const msg = document.getElementById('applyMsg');
+      if (!email || !pass) { msg.innerHTML = '<div class="msg err">Please fill in your email and password.</div>'; return; }
+
+      if (applyMode === 'signup') {
+        const name = document.getElementById('aName').value.trim();
+        if (!name) { msg.innerHTML = '<div class="msg err">Please enter your name.</div>'; return; }
+        const res = await fetch('/api/candidates/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password: pass })
+        });
+        const d = await res.json();
+        if (d.error) { msg.innerHTML = `<div class="msg err">${d.error}</div>`; return; }
+        msg.innerHTML = `<div class="msg ok">${d.message}</div>`;
+        setTimeout(() => closeOverlay('applyOverlay'), 2200);
+        loadStats();
+        return;
+      }
+
+      // Login then apply
+      const login = await fetch('/api/candidates/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass })
+      }).then(r => r.json());
+      if (login.error) { msg.innerHTML = `<div class="msg err">${login.error}</div>`; return; }
+
+      if (!currentJobId) {
+        msg.innerHTML = `<div class="msg ok">${login.message}</div>`;
+        setTimeout(() => closeOverlay('applyOverlay'), 1800);
+        return;
+      }
+
+      const cover = document.getElementById('aCover').value.trim();
+      if (!cover) { msg.innerHTML = '<div class="msg err">Please write a cover letter — even a short one helps!</div>'; return; }
+
+      const app = await fetch('/api/apply', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ job_id: currentJobId, candidate_id: login.candidate_id, cover_letter: cover })
+      }).then(r => r.json());
+
+      if (app.error) { msg.innerHTML = `<div class="msg err">${app.error}</div>`; return; }
+      msg.innerHTML = `<div class="msg ok">${app.message}</div>`;
+      setTimeout(() => closeOverlay('applyOverlay'), 2500);
+      loadStats();
+    }
+
+    loadJobs();
+    loadStats();
+  </script>
+</body>
+
+</html>

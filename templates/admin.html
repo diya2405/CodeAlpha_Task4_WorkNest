@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — WorkNest</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0a1e;
+      --surface: #16102b;
+      --card: #1e1638;
+      --border: #2e2454;
+      --accent: #6c47ff;
+      --accent2: #ff6b6b;
+      --green: #00c48c;
+      --yellow: #ffb020;
+      --blue: #3b82f6;
+      --text: #f0eaff;
+      --muted: #7c6fa0;
+      --pill: #2e2454
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 50px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border)
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      font-style: italic
+    }
+
+    .nav-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #6c47ff22;
+      border: 1px solid #6c47ff44;
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600
+    }
+
+    .nav-r a {
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-size: 13px;
+      text-decoration: none;
+      color: var(--muted);
+      margin-left: 6px;
+      transition: all .2s
+    }
+
+    .nav-r a:hover {
+      color: var(--text);
+      background: var(--pill)
+    }
+
+    .nav-r a.back {
+      color: var(--accent)
+    }
+
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 50px
+    }
+
+    .page-head {
+      margin-bottom: 32px
+    }
+
+    .page-head h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 700
+    }
+
+    .page-head p {
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    /* STAT CARDS */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 36px
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px
+    }
+
+    .sc-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 8px
+    }
+
+    .sc-num {
+      font-family: 'Fraunces', serif;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1
+    }
+
+    .sc-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    .sc-accent {
+      color: var(--accent)
+    }
+
+    .sc-green {
+      color: var(--green)
+    }
+
+    .sc-yellow {
+      color: var(--yellow)
+    }
+
+    .sc-blue {
+      color: var(--blue)
+    }
+
+    .sc-red {
+      color: var(--accent2)
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 26px
+    }
+
+    .tab {
+      padding: 10px 22px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: all .2s
+    }
+
+    .tab:hover {
+      color: var(--text)
+    }
+
+    .tab.on {
+      color: var(--accent);
+      border-color: #6c47ff44;
+      background: #6c47ff11
+    }
+
+    .panel {
+      display: none
+    }
+
+    .panel.on {
+      display: block
+    }
+
+    /* TABLE */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border)
+    }
+
+    .data-table th {
+      padding: 13px 18px;
+      text-align: left;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface)
+    }
+
+    .data-table td {
+      padding: 13px 18px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none
+    }
+
+    .data-table tr:hover td {
+      background: #ffffff04
+    }
+
+    .badge {
+      padding: 4px 11px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600
+    }
+
+    .b-open {
+      background: #00c48c12;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .b-closed {
+      background: var(--pill);
+      color: var(--muted);
+      border: 1px solid var(--border)
+    }
+
+    .b-applied {
+      background: #6c47ff18;
+      color: var(--accent);
+      border: 1px solid #6c47ff33
+    }
+
+    .b-reviewed {
+      background: #ffb02018;
+      color: var(--yellow);
+      border: 1px solid #ffb02033
+    }
+
+    .b-interview {
+      background: #3b82f618;
+      color: var(--blue);
+      border: 1px solid #3b82f633
+    }
+
+    .b-hired {
+      background: #00c48c18;
+      color: var(--green);
+      border: 1px solid #00c48c33
+    }
+
+    .b-rejected {
+      background: #ff6b6b18;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    .del-btn {
+      padding: 6px 13px;
+      background: #ff6b6b18;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: all .2s
+    }
+
+    .del-btn:hover {
+      background: #ff6b6b30
+    }
+
+    .search-inp {
+      width: 100%;
+      padding: 11px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color .2s
+    }
+
+    .search-inp:focus {
+      border-color: var(--accent)
+    }
+
+    .search-inp::placeholder {
+      color: var(--muted)
+    }
+
+    .empty {
+      text-align: center;
+      padding: 50px;
+      color: var(--muted);
+      font-size: 15px
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-style: italic
+    }
+
+    /* quick action */
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap
+    }
+
+    .qa {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      transition: all .2s
+    }
+
+    .qa-danger {
+      background: #ff6b6b18;
+      color: var(--accent2);
+      border: 1px solid #ff6b6b33
+    }
+
+    .qa-danger:hover {
+      background: #ff6b6b28
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo">WorkNest</div>
+      <span class="nav-badge">⚙ Admin Panel</span>
+    </div>
+    <div class="nav-r">
+      <a href="/" class="back">← Home</a>
+      <a href="/employer">Employers</a>
+      <a href="/candidate">Candidates</a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="page-head">
+      <h2>Platform Overview</h2>
+      <p>Everything happening on WorkNest, in one place.</p>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="sc-label">Open Jobs</div>
+        <div class="sc-num sc-accent" id="sc-jobs">—</div>
+        <div class="sc-sub">Active listings</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Companies</div>
+        <div class="sc-num sc-blue" id="sc-emp">—</div>
+        <div class="sc-sub">Registered employers</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Candidates</div>
+        <div class="sc-num sc-yellow" id="sc-cands">—</div>
+        <div class="sc-sub">Job seekers</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Total Applications</div>
+        <div class="sc-num sc-green" id="sc-apps">—</div>
+        <div class="sc-sub">Submitted so far</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Interviews Scheduled</div>
+        <div class="sc-num sc-blue" id="sc-int">—</div>
+        <div class="sc-sub">Candidates shortlisted</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Successful Hires</div>
+        <div class="sc-num sc-green" id="sc-hired">—</div>
+        <div class="sc-sub">via WorkNest 🎉</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab on" onclick="sw('jobs')">All Jobs</div>
+      <div class="tab" onclick="sw('employers')">Employers</div>
+      <div class="tab" onclick="sw('candidates')">Candidates</div>
+      <div class="tab" onclick="sw('applications')">Applications</div>
+    </div>
+
+    <!-- JOBS -->
+    <div class="panel on" id="p-jobs">
+      <input class="search-inp" id="jobSearch" placeholder="Search jobs..." oninput="filterJobs()">
+      <div id="jobsTable">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- EMPLOYERS -->
+    <div class="panel" id="p-employers">
+      <input class="search-inp" id="empSearch" placeholder="Search companies..." oninput="filterEmps()">
+      <div id="empsTable">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- CANDIDATES -->
+    <div class="panel" id="p-candidates">
+      <input class="search-inp" id="candSearch" placeholder="Search candidates..." oninput="filterCands()">
+      <div id="candsTable">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- APPLICATIONS -->
+    <div class="panel" id="p-applications">
+      <input class="search-inp" id="appSearch" placeholder="Search by candidate or company..." oninput="filterApps()">
+      <div id="appsTable">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allJobs = [], allEmps = [], allCands = [], allApps = [];
+
+    async function loadStats() {
+      const d = await fetch('/api/stats').then(r => r.json());
+      document.getElementById('sc-jobs').textContent = d.total_jobs;
+      document.getElementById('sc-emp').textContent = d.total_employers;
+      document.getElementById('sc-cands').textContent = d.total_candidates;
+      document.getElementById('sc-apps').textContent = d.total_applications;
+      document.getElementById('sc-int').textContent = d.interviews;
+      document.getElementById('sc-hired').textContent = d.hired;
+    }
+
+    function sw(tab) {
+      ['jobs', 'employers', 'candidates', 'applications'].forEach((t, i) => {
+        document.querySelectorAll('.tab')[i].classList.toggle('on', t === tab);
+        document.getElementById('p-' + t).classList.toggle('on', t === tab);
+      });
+      if (tab === 'jobs') loadJobs();
+      if (tab === 'employers') loadEmps();
+      if (tab === 'candidates') loadCands();
+      if (tab === 'applications') loadApps();
+    }
+
+    function fmtDate(iso) {
+      return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // ── JOBS ──
+    async function loadJobs() {
+      const res = await fetch('/api/jobs?status=').then(r => r.json());
+      allJobs = res;
+      renderJobs(allJobs);
+    }
+    function filterJobs() {
+      const q = document.getElementById('jobSearch').value.toLowerCase();
+      renderJobs(allJobs.filter(j => (j.title + j.company_name + j.location).toLowerCase().includes(q)));
+    }
+    function renderJobs(jobs) {
+      const wrap = document.getElementById('jobsTable');
+      if (!jobs.length) { wrap.innerHTML = '<div class="empty">No jobs found.</div>'; return; }
+      wrap.innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>Title</th><th>Company</th><th>Location</th><th>Type</th><th>Salary</th><th>Status</th><th>Posted</th><th></th></tr></thead>
+      <tbody>${jobs.map(j => `
+        <tr>
+          <td><strong>${j.title}</strong></td>
+          <td>${j.company_name}</td>
+          <td>${j.location}</td>
+          <td>${j.job_type}</td>
+          <td>${j.salary}</td>
+          <td><span class="badge ${j.status === 'open' ? 'b-open' : 'b-closed'}">${j.status}</span></td>
+          <td>${fmtDate(j.posted_at)}</td>
+          <td><button class="del-btn" onclick="closeJob('${j._id}')">Close</button></td>
+        </tr>
+      `).join('')}</tbody>
+    </table>`;
+    }
+    async function closeJob(id) {
+      await fetch('/api/jobs/' + id, { method: 'DELETE' });
+      loadJobs(); loadStats();
+    }
+
+    // ── EMPLOYERS ──
+    async function loadEmps() {
+      allEmps = await fetch('/api/employers').then(r => r.json());
+      renderEmps(allEmps);
+    }
+    function filterEmps() {
+      const q = document.getElementById('empSearch').value.toLowerCase();
+      renderEmps(allEmps.filter(e => (e.company_name + e.email + e.industry).toLowerCase().includes(q)));
+    }
+    function renderEmps(emps) {
+      const wrap = document.getElementById('empsTable');
+      if (!emps.length) { wrap.innerHTML = '<div class="empty">No employers found.</div>'; return; }
+      wrap.innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>Company</th><th>Email</th><th>Industry</th><th>Website</th><th>Joined</th></tr></thead>
+      <tbody>${emps.map(e => `
+        <tr>
+          <td><strong>${e.company_name}</strong></td>
+          <td>${e.email}</td>
+          <td>${e.industry || '—'}</td>
+          <td>${e.website ? `<a href="${e.website}" target="_blank" style="color:var(--accent)">${e.website}</a>` : '—'}</td>
+          <td>${fmtDate(e.created_at)}</td>
+        </tr>
+      `).join('')}</tbody>
+    </table>`;
+    }
+
+    // ── CANDIDATES ──
+    async function loadCands() {
+      allCands = await fetch('/api/candidates').then(r => r.json());
+      renderCands(allCands);
+    }
+    function filterCands() {
+      const q = document.getElementById('candSearch').value.toLowerCase();
+      renderCands(allCands.filter(c => (c.name + c.email + c.location).toLowerCase().includes(q)));
+    }
+    function renderCands(cands) {
+      const wrap = document.getElementById('candsTable');
+      if (!cands.length) { wrap.innerHTML = '<div class="empty">No candidates found.</div>'; return; }
+      wrap.innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Location</th><th>Experience</th><th>Skills</th><th>Joined</th></tr></thead>
+      <tbody>${cands.map(c => `
+        <tr>
+          <td><strong>${c.name}</strong></td>
+          <td>${c.email}</td>
+          <td>${c.location || '—'}</td>
+          <td>${c.experience || '—'}</td>
+          <td>${(c.skills || []).slice(0, 3).join(', ') || '—'}</td>
+          <td>${fmtDate(c.created_at)}</td>
+        </tr>
+      `).join('')}</tbody>
+    </table>`;
+    }
+
+    // ── APPLICATIONS ──
+    async function loadApps() {
+      allApps = await fetch('/api/applications').then(r => r.json());
+      renderApps(allApps);
+    }
+    function filterApps() {
+      const q = document.getElementById('appSearch').value.toLowerCase();
+      renderApps(allApps.filter(a => (a.candidate_name + a.company_name + a.job_title).toLowerCase().includes(q)));
+    }
+    function renderApps(apps) {
+      const wrap = document.getElementById('appsTable');
+      if (!apps.length) { wrap.innerHTML = '<div class="empty">No applications found.</div>'; return; }
+      wrap.innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>Candidate</th><th>Job</th><th>Company</th><th>Status</th><th>Applied</th><th></th></tr></thead>
+      <tbody>${apps.map(a => `
+        <tr>
+          <td><strong>${a.candidate_name}</strong><br><span style="font-size:12px;color:var(--muted)">${a.candidate_email}</span></td>
+          <td>${a.job_title}</td>
+          <td>${a.company_name}</td>
+          <td><span class="badge b-${a.status}">${a.status}</span></td>
+          <td>${fmtDate(a.applied_at)}</td>
+          <td><button class="del-btn" onclick="deleteApp('${a._id}')">Remove</button></td>
+        </tr>
+      `).join('')}</tbody>
+    </table>`;
+    }
+    async function deleteApp(id) {
+      if (!confirm('Remove this application?')) return;
+      await fetch('/api/applications/' + id, { method: 'DELETE' });
+      loadApps(); loadStats();
+    }
+
+    loadStats();
+    loadJobs();
+  </script>
+</body>
+
+</html>
